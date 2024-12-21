@@ -40,10 +40,8 @@ def validate_password_strength(password):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ('is_teacher', 'is_student', 'is_employee', 'is_admin')
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
 
     def validate_password(self, value):
         validate_password_strength(value)
@@ -64,6 +62,7 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("اکانتی با این نام شماره وجود دارد.")
         return value
 
+    @transaction.atomic
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = User.objects.create(**validated_data)
@@ -71,6 +70,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
         for attr, value in validated_data.items():
