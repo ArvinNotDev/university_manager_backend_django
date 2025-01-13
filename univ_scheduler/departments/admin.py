@@ -9,7 +9,7 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(DepartmentManager)
 class DepartmentManagerAdmin(admin.ModelAdmin):
-    list_display = ('department', 'manager_name', 'start_date')
-    search_fields = ('manager_name', 'department__name')
-    ordering = ('manager_name',)
+    list_display = ('department', 'manager_name', 'start_date', 'created_at', 'updated_at')
+    search_fields = ('manager_name', 'department__name', 'created_at', 'updated_at')
+    ordering = ('manager_name', 'created_at', 'updated_at')
 
