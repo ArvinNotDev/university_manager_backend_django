@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import User
 from departments.models import Department
 from django.utils.translation import ugettext_lazy as _
+import uuid
 
 
 class BaseModel(models.Model):
@@ -23,13 +24,13 @@ class Class(BaseModel):
         verbose_name_plural = 'Classes'
 
     def __str__(self):
-        return f"{self.course.name} - {', '.join([instructor.username for instructor in self.instructors.all()])}"
+        return self.name
 
 
 class Course(BaseModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_("ID"), db_index=True)
     name = models.CharField(max_length=100, verbose_name=_("Name"))
-    code = models.CharField(max_length=10, unique=True, verbose_name=_("Code"), db_index=True)
-    _class = models.ManyToManyField(Class, on_delete=models.CASCADE, verbose_name=_("Class"), db_index=True)
+    _class = models.ManyToManyField(Class, verbose_name=_("Class"))
     instructors = models.ManyToManyField(User, limit_choices_to={'is_teacher': True}, verbose_name=_("Instructors"))
     description = models.TextField(verbose_name=_("Description"))
     schedule = models.TimeField(verbose_name=_("Schedule"), db_index=True)
