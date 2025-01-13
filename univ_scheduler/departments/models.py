@@ -14,12 +14,12 @@ class BaseModel(models.Model):
 
 class DepartmentManager(BaseModel):
     user = models.OneToOneField(User, limit_choices_to={"is_employee": True}, on_delete=models.CASCADE, verbose_name=_("User"), db_index=True)
-    department = models.OneToOneField('Department', on_delete=models.CASCADE, verbose_name=_("Department"), db_index=True)
 
 
 class Department(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_("ID"), db_index=True)
     name = models.CharField(max_length=100, verbose_name=_("Name"), db_index=True)
+    department_manager = models.OneToOneField(DepartmentManager, on_delete=models.CASCADE, verbose_name=_("Department manager"), db_index=True)
     description = models.TextField(max_length=200, verbose_name=_("Description"))
 
     def __str__(self):
