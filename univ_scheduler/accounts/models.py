@@ -1,24 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from django.utils.translation import gettext_lazy as _
 from uuid import uuid4
 
 
-class User(AbstractBaseUser):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=14, unique=True, null=True, blank=True)
-    email = models.EmailField(max_length=200, unique=True)
-    birth_data = models.DateTimeField(null=True, blank=True)
-    is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_teacher = models.BooleanField(default=False)
-    is_employee = models.BooleanField(default=False)
-    is_student = models.BooleanField(default=False)
-    update_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated At"))
+
+    class Meta:
+        abstract = True
+
+
+class User(BaseModel, AbstractBaseUser):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, verbose_name=_("ID"))
+    first_name = models.CharField(max_length=100, verbose_name=_("First Name"))
+    last_name = models.CharField(max_length=100, verbose_name=_("Last Name"))
+    username = models.CharField(max_length=100, unique=True, verbose_name=_("Username"), db_index=True)
+    phone_number = models.CharField(max_length=14, unique=True, null=True, blank=True, verbose_name=_("Phone Number"))
+    email = models.EmailField(max_length=200, unique=True, verbose_name=_("Email"), db_index=True)
+    birth_date = models.DateTimeField(null=True, blank=True, verbose_name=_("Birth Date"))
+    is_admin = models.BooleanField(default=False, verbose_name=_("Is Admin"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
+    is_teacher = models.BooleanField(default=False, verbose_name=_("Is Teacher"))
+    is_employee = models.BooleanField(default=False, verbose_name=_("Is Employee"))
+    is_student = models.BooleanField(default=False, verbose_name=_("Is Student"))
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ["phone_number", "email", "first_name", "last_name"]
-    
+
+    def __str__(self):
+        return self.username
