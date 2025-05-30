@@ -10,7 +10,7 @@ University Manager
 │   ├── Department Model
 │   │   ├── name
 │   │   └── description
-│   └── DepartmentManager Model (junction table)
+│   └── DepartmentManager Model
 │       ├── user (OneToOne to User)
 │       └── department (ForeignKey)
 │
