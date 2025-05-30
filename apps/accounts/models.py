@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-from .user_manager import UserManager
+from .managers import UserManager
 from base.models import BaseModel
 from uuid import uuid4
 
