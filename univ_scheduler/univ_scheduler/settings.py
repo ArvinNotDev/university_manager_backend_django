@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # apps
     'accounts.apps.AccountsConfig',
+    'classes.apps.ClassesConfig',
+    'departments.apps.DepartmentsConfig',
 
     # third parties
     'rest_framework',
