@@ -12,8 +12,8 @@ class ClassAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'get_class', 'display_instructors', 'description', 'schedule', 'created_at', 'updated_at')
-    list_filter = ('_class', 'instructors', 'schedule', 'created_at', 'updated_at')
+    list_display = ('id', 'name', 'get_class', 'display_instructors', 'description', 'created_at', 'updated_at')
+    list_filter = ('_class', 'instructors', 'created_at', 'updated_at')
     ordering = ('name', 'created_at', 'updated_at')
     search_fields = ('name', '_class__name', 'instructors__username', 'schedule', 'created_at', 'updated_at')
     

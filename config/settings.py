@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # third parties
     'rest_framework',
+    'django_celery_beat',
 
 ]
 
@@ -79,6 +80,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'update-class-status-every-minute': {
+        'task': 'classes.tasks.update_class_status',
+        'schedule': crontab(minute='*'),  # Every minute
+    },
+}
 
 
 # Database
