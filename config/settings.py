@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'classes.apps.ClassesConfig',
     'departments.apps.DepartmentsConfig',
+    'attendances.apps.AttendancesConfig',
 
     # third parties
     'rest_framework',
