@@ -10,6 +10,7 @@ import uuid
 class Class(BaseModel):
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name=_("Department"), db_index=True)
+    in_use = models.BooleanField(verbose_name=_("Class in use"), default=False)
     description = models.TextField(verbose_name=_("Description"))
 
     class Meta:
