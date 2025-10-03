@@ -9,14 +9,19 @@ class AttendanceSession(BaseModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name=_("Course"))
     class_obj = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name=_("Class"))
     schedule = models.ForeignKey(CourseSchedule, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Course Schedule"))
-    date = models.DateField(verbose_name=_("Date"))
 
     class Meta:
         verbose_name = _("Attendance Session")
         verbose_name_plural = _("Attendance Sessions")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["course", "class_obj", "schedule", "created_at"],
+                name="unique_attendance_session_per_day"
+            )
+        ]
 
     def __str__(self):
-        return f"{self.course} - {self.date}"
+        return f"{self.course} - {self.created_at.date()}"
 
 
 class AttendanceRecord(BaseModel):
@@ -27,6 +32,12 @@ class AttendanceRecord(BaseModel):
     class Meta:
         verbose_name = _("Attendance Record")
         verbose_name_plural = _("Attendance Records")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["session", "student"],
+                name="unique_attendance_per_student"
+            )
+        ]
 
     def __str__(self):
         return f"{self.student} - {self.session} ({'Present' if self.present else 'Absent'})"
