@@ -90,8 +90,12 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     'update-class-status-every-minute': {
         'task': 'classes.tasks.update_class_status',
-        'schedule': crontab(minute='*'),  # Every minute
+        'schedule': crontab(minute='*'),  # triggers every minute
     },
+    'create-attendance-session-every-minute':{
+        'task': 'attendances.tasks.create_attendance_sessions',
+        'schedule': crontab(minute="*"), # triggers every minute
+    }
 }
 
 
